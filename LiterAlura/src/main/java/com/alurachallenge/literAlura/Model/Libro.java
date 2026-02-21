@@ -14,6 +14,8 @@ public class Libro {
     private String autores;
     private String idiomas;
     private Integer descargas;
+    @ManyToOne(cascade = CascadeType.ALL) // Esto guarda al autor automáticamente al guardar el libro
+    private Autores autor;
 
     public Libro() {} // Constructor vacío obligatorio para JPA
 
@@ -29,6 +31,10 @@ public class Libro {
         this.autores = datosLibro.autores().stream()
                 .map(a -> a.nombre())
                 .collect(Collectors.joining(", "));
+        if (datosLibro.autores() != null && !datosLibro.autores().isEmpty()) {
+            // Convertimos el primer AutoresDTO en una entidad Autores real
+            this.autor = new Autores(datosLibro.autores().get(0));
+        }
     }
 
     public Long getId() {
@@ -69,6 +75,14 @@ public class Libro {
 
     public void setDescargas(Integer descargas) {
         this.descargas = descargas;
+    }
+
+    public Autores getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autores autor) {
+        this.autor = autor;
     }
 
     @Override

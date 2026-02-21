@@ -1,8 +1,10 @@
 package com.alurachallenge.literAlura.Principal;
 
+import com.alurachallenge.literAlura.Model.Autores;
 import com.alurachallenge.literAlura.Model.DatosRespuesta;
 import com.alurachallenge.literAlura.Model.Libro;
 import com.alurachallenge.literAlura.Model.LibroDTO;
+import com.alurachallenge.literAlura.Repository.AutoresRepository;
 import com.alurachallenge.literAlura.Repository.LibroRepository;
 import com.alurachallenge.literAlura.Service.ConsumoApi;
 import com.alurachallenge.literAlura.Service.ConvierteDatos;
@@ -13,18 +15,19 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class Principal {
+    private Scanner teclado = new Scanner(System.in);
 
     private LibroRepository repositorio;
+    private AutoresRepository autoresRepository;
     private final String URL_BASE = "https://gutendex.com/books/";
     private ConsumoApi consumoApi = new ConsumoApi();
     private ConvierteDatos conversor = new ConvierteDatos();
 
     // Usamos un constructor para recibir el repositorio desde la clase Application
-    public Principal(LibroRepository repository) {
+    public Principal(LibroRepository repository, AutoresRepository autoresRepository) {
         this.repositorio = repository;
+        this.autoresRepository = autoresRepository;
     }
-
-    private Scanner teclado;
 
 
     public void muestraElMenu() {
@@ -60,6 +63,14 @@ public class Principal {
 
                 case 3:
                     listarAutoresRegistrados();
+                    break;
+
+                case 4:
+                    listarAutoresVivosEnAnio();
+                    break;
+
+                case 5:
+                    listarLibrosPorIdioma();
                     break;
 
                 case 0:
@@ -125,5 +136,44 @@ public class Principal {
                 .map(Libro::getAutores)
                 .distinct() // Para no repetir nombres si tienes varios libros del mismo autor
                 .forEach(System.out::println);
+    }
+
+    private void listarAutoresVivosEnAnio() {
+        System.out.println("Ingresa el año que deseas consultar:");
+        var anio = teclado.nextInt();
+        teclado.nextLine(); // Limpiar el buffer
+
+        List<Autores> autores = autoresRepository.buscarAutoresVivosEnAnio(anio);
+
+        if (autores.isEmpty()) {
+            System.out.println("No se encontraron autores registrados vivos en el año " + anio);
+        } else {
+            autores.forEach(a -> System.out.println(
+                    "Autor: " + a.getNombre() +
+                            " | Nacimiento: " + a.getFechaNacimiento() +
+                            " | Fallecimiento: " + (a.getFechaNacimiento() == null ? "N/A" : a.getFechaFallecimiento())
+            ));
+        }
+    }
+
+    private void listarLibrosPorIdioma() {
+        var menuIdiomas = """
+            Ingrese el idioma para buscar los libros:
+            es - Español
+            en - Inglés
+            fr - Francés
+            pt - Portugués
+            """;
+        System.out.println(menuIdiomas);
+        var idiomaElegido = teclado.nextLine().toLowerCase(); // Lo pasamos a minúscula por seguridad
+
+        List<Libro> librosPorIdioma = repositorio.findByIdiomasContains(idiomaElegido);
+
+        if (librosPorIdioma.isEmpty()) {
+            System.out.println("No se encontraron libros en el idioma seleccionado en la base de datos.");
+        } else {
+            System.out.println("----- LIBROS EN " + idiomaElegido.toUpperCase() + " -----");
+            librosPorIdioma.forEach(System.out::println);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.alurachallenge.literAlura;
 
 import com.alurachallenge.literAlura.Principal.Principal;
+import com.alurachallenge.literAlura.Repository.AutoresRepository;
 import com.alurachallenge.literAlura.Repository.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +13,8 @@ public class LiterAluraApplication implements CommandLineRunner {
 
     @Autowired // Le pedimos a Spring que busque el repositorio
     private LibroRepository repository;
+    @Autowired
+    private AutoresRepository autoresRepository;
 
 
     public static void main(String[] args) {
@@ -21,7 +24,7 @@ public class LiterAluraApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Ahora sí, le pasamos el 'repository' que Spring nos dio
-        Principal principal = new Principal(repository);
+        Principal principal = new Principal(repository, autoresRepository);
         principal.muestraElMenu();
     }
 }
