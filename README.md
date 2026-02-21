@@ -2,7 +2,7 @@ LiterAlura - Catálogo de Libros
 
 ¡Bienvenido a LiterAlura! 
 
-Este es un desafío de programación Java que consiste en construir un catálogo de libros interactivo. La aplicación consume datos de la API Gutendex, los procesa y los almacena en una base de datos relacional para su posterior consulta.
+Este es un desafío de programación Java y Spring, el cual consistió en construir un catálogo de libros interactivo con la base de datos de PostgreSQL. La aplicación consume datos de la API Gutendex, para procesarlos y luego almacenarlos en la base de datos, con la finalidad de poder consultarlos más tarde.
 
 Características
 La aplicación ofrece un menú interactivo con las siguientes funcionalidades:
@@ -18,3 +18,10 @@ La aplicación ofrece un menú interactivo con las siguientes funcionalidades:
 5 - Listar libros por idioma: Permite filtrar tu colección por códigos de idioma (es, en, fr, pt).
 
 0 - Salir: La aplicación se cierra.
+
+Dependencies que se utilizaron
+
+Spring DATA JPA
+PostgreSQL Driver
+
+
