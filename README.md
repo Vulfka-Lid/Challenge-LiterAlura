@@ -1,5 +1,8 @@
 LiterAlura - Catálogo de Libros 
-¡Bienvenido a LiterAlura! Este es un desafío de programación Java que consiste en construir un catálogo de libros interactivo. La aplicación consume datos de la API Gutendex, los procesa y los almacena en una base de datos relacional para su posterior consulta.
+
+¡Bienvenido a LiterAlura! 
+
+Este es un desafío de programación Java que consiste en construir un catálogo de libros interactivo. La aplicación consume datos de la API Gutendex, los procesa y los almacena en una base de datos relacional para su posterior consulta.
 
 Características
 La aplicación ofrece un menú interactivo con las siguientes funcionalidades:
